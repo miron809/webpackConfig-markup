@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require("fs");
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -27,6 +28,24 @@ const optimization = () => {
   return config
 };
 
+const generateHtmlPlugins = (templateDir) => {
+  const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
+  return templateFiles.map(item => {
+    const parts = item.split(".");
+    const name = parts[0];
+    const extension = parts[1];
+    return new HTMLWebpackPlugin({
+      filename: `${name}.html`,
+      template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
+      minify: {
+        collapseWhitespace: isProd
+      }
+    });
+  });
+};
+
+const htmlPlugins = generateHtmlPlugins("src/templates/views");
+
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 
 const cssLoaders = extra => {
@@ -38,7 +57,21 @@ const cssLoaders = extra => {
         reloadAll: true
       },
     },
-    'css-loader'
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: isDev
+      }
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        sourceMap: true,
+        config: {
+          path: 'postcss.config.js',
+        },
+      },
+    },
   ];
 
   if (extra) {
@@ -76,12 +109,6 @@ const jsLoaders = () => {
 
 const plugins = () => {
   const base = [
-    new HTMLWebpackPlugin({
-      template: './index.html',
-      minify: {
-        collapseWhitespace: isProd
-      }
-    }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
       {
@@ -100,7 +127,7 @@ const plugins = () => {
     new MiniCssExtractPlugin({
       filename: filename('css')
     })
-  ];
+  ].concat(htmlPlugins);
 
   if (isProd) {
     base.push(new BundleAnalyzerPlugin())
@@ -134,6 +161,11 @@ module.exports = {
   plugins: plugins(),
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        include: path.resolve(__dirname, "src/templates/includes"),
+        use: ["raw-loader"]
+      },
       {
         test: /\.css$/,
         use: cssLoaders()

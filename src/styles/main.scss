@@ -1,3 +1,4 @@
+@import "header";
 @import "login";
 
 @font-face {
@@ -7,4 +8,16 @@
 
 * {
   font-family: 'Roboto', 'sans-serif';
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+img {
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
 }
