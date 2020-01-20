@@ -146,12 +146,6 @@ module.exports = {
     filename: filename('js'),
     path: path.resolve(__dirname, 'dist')
   },
-  resolve: {
-    extensions: ['.js', '.json', '.png'],
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    }
-  },
   optimization: optimization(),
   devServer: {
     port: 4201,
