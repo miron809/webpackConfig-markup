@@ -1,21 +1,21 @@
-const path = require('path')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin')
-const TerserWebpackPlugin = require('terser-webpack-plugin')
-const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
+const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
-const isDev = process.env.NODE_ENV === 'development'
-const isProd = !isDev
+const isDev = process.env.NODE_ENV === 'development';
+const isProd = !isDev;
 
 const optimization = () => {
   const config = {
     splitChunks: {
       chunks: 'all'
     }
-  }
+  };
 
   if (isProd) {
     config.minimizer = [
@@ -25,9 +25,9 @@ const optimization = () => {
   }
 
   return config
-}
+};
 
-const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`
+const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 
 const cssLoaders = extra => {
   const loaders = [
@@ -39,14 +39,14 @@ const cssLoaders = extra => {
       },
     },
     'css-loader'
-  ]
+  ];
 
   if (extra) {
     loaders.push(extra)
   }
 
   return loaders
-}
+};
 
 const babelOptions = preset => {
   const opts = {
@@ -56,23 +56,23 @@ const babelOptions = preset => {
     plugins: [
       '@babel/plugin-proposal-class-properties'
     ]
-  }
+  };
 
   if (preset) {
     opts.presets.push(preset)
   }
 
   return opts
-}
+};
 
 const jsLoaders = () => {
   const loaders = [{
     loader: 'babel-loader',
     options: babelOptions()
-  }]
+  }];
 
   return loaders
-}
+};
 
 const plugins = () => {
   const base = [
@@ -100,14 +100,14 @@ const plugins = () => {
     new MiniCssExtractPlugin({
       filename: filename('css')
     })
-  ]
+  ];
 
   if (isProd) {
     base.push(new BundleAnalyzerPlugin())
   }
 
   return base
-}
+};
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -173,4 +173,4 @@ module.exports = {
       }
     ]
   }
-}
+};
