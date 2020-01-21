@@ -1,9 +1,14 @@
 <%= _.template(require('./../includes/header.html').default)(data) %>
 
-<div class="container">
-  <a href="second.html">go to second</a>
-  <div class="logo">This is logo aga</div>
-  <img src="./img/webpack-logo.png" height="1200" width="1200" alt="">
+<div id="wrapper">
+  <main id="main">
+    <div class="container">
+      <img src="./img/webpack-logo.png" height="1200" width="1200" alt="">
+      <h1>Roboto bold</h1>
+      <h2>Roboto medium</h2>
+      <h3>Roboto regular</h3>
+    </div>
+  </main>
 </div>
 
 <%= _.template(require('./../includes/footer.html').default)(data) %>
