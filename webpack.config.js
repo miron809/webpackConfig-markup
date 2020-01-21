@@ -45,7 +45,7 @@ const generateHtmlPlugins = (templateDir) => {
   });
 };
 
-const htmlPlugins = generateHtmlPlugins("./src/html/views");
+const htmlPlugins = generateHtmlPlugins("src/templates/views");
 
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 
@@ -113,17 +113,9 @@ const plugins = () => {
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'src/favicon'),
-        to: path.resolve(__dirname, 'dist/favicon')
-      },
-      {
-        from: path.resolve(__dirname, 'src/img'),
-        to: path.resolve(__dirname, 'dist/img'),
-      },
-      {
-        from: path.resolve(__dirname, 'src/fonts'),
-        to: path.resolve(__dirname, 'dist/fonts'),
-      },
+        from: path.resolve(__dirname, 'src/assets/static'),
+        to: path.resolve(__dirname, 'dist/assets/static')
+      }
     ]),
     new MiniCssExtractPlugin({
       filename: filename('css')
@@ -144,7 +136,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
-    main: ['@babel/polyfill', './js/index.js', './css/main.scss']
+    main: ['@babel/polyfill', './assets/scripts/index.js', './assets/styles/index.scss']
   },
   output: {
     filename: filename('js'),
@@ -160,7 +152,7 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        include: path.resolve(__dirname, "src/html/includes"),
+        include: path.resolve(__dirname, "src/templates/includes"),
         use: ["raw-loader"]
       },
       {
@@ -178,19 +170,19 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'img/',
+              outputPath: 'assets/static/images/',
             }
           }
         ]
       },
       {
-        test: /\.(ttf|woff|woff2|eot)$/,
+        test: /\.(ttf|woff|woff2|eot)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'fonts/',
+              outputPath: 'assets/static/fonts/',
             }
           }
         ]
