@@ -45,7 +45,7 @@ const generateHtmlPlugins = (templateDir) => {
   });
 };
 
-const htmlPlugins = generateHtmlPlugins("src/templates/views");
+const htmlPlugins = generateHtmlPlugins("./src/html/views");
 
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 
@@ -113,15 +113,15 @@ const plugins = () => {
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'src/favicon.ico'),
-        to: path.resolve(__dirname, 'dist')
+        from: path.resolve(__dirname, 'src/favicon'),
+        to: path.resolve(__dirname, 'dist/favicon')
       },
       {
-        from: path.resolve(__dirname, 'src/assets/img'),
+        from: path.resolve(__dirname, 'src/img'),
         to: path.resolve(__dirname, 'dist/img'),
       },
       {
-        from: path.resolve(__dirname, 'src/assets/fonts'),
+        from: path.resolve(__dirname, 'src/fonts'),
         to: path.resolve(__dirname, 'dist/fonts'),
       },
     ]),
@@ -144,7 +144,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
-    main: ['@babel/polyfill', './index.js', './styles/main.scss']
+    main: ['@babel/polyfill', './js/index.js', './css/main.scss']
   },
   output: {
     filename: filename('js'),
@@ -160,7 +160,7 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        include: path.resolve(__dirname, "src/templates/includes"),
+        include: path.resolve(__dirname, "src/html/includes"),
         use: ["raw-loader"]
       },
       {
