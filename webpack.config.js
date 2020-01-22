@@ -31,21 +31,25 @@ const optimization = () => {
 
 const generateHtmlPlugins = (templateDir) => {
   const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
-  return templateFiles.map(item => {
-    const parts = item.split(".");
-    const name = parts[0];
-    const extension = parts[1];
-    return new HTMLWebpackPlugin({
-      filename: `${name}.html`,
-      template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
-      minify: {
-        collapseWhitespace: isProd
+  return templateFiles
+    .map(item => {
+      if (item.includes('.html')) {
+        const parts = item.split(".");
+        const name = parts[0];
+        const extension = parts[1];
+        return new HTMLWebpackPlugin({
+          filename: `${name}.${extension}`,
+          template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
+          minify: {
+            collapseWhitespace: isProd
+          }
+        });
       }
-    });
-  });
+    })
+    .filter(item => item)
 };
 
-const htmlPlugins = generateHtmlPlugins("src/templates/views");
+const htmlPlugins = generateHtmlPlugins("src");
 
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 
@@ -125,7 +129,7 @@ const plugins = () => {
   if (isProd) {
     base.push(
       new BundleAnalyzerPlugin(),
-      new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
+      new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i})
     )
   }
 
@@ -152,7 +156,7 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        include: path.resolve(__dirname, "src/templates/includes"),
+        include: path.resolve(__dirname, "src/templates"),
         use: ["raw-loader"]
       },
       {
