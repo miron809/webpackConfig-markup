@@ -1,6 +1,28 @@
-* {
-  font-family: 'Roboto', 'sans-serif';
+html {
+  font-size: 16px;
 }
+
+body {
+  background: #fff;
+  font-family: "Roboto", sans-serif;
+  min-width: 320px;
+}
+
+.wrapper {
+  overflow: hidden;
+  min-width: 320px;
+}
+
+section {
+  position: relative;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+//example
 
 h1 {
   font-weight: bold;
